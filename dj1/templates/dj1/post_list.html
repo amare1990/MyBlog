@@ -1,0 +1,62 @@
+{% extends "base_menu.html" %}
+{% block content %}
+<h1> All Posts </h1>
+
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Search.." name="search"
+  {% if search %} value="{{ search }}" {% endif %} >
+  <button type="submit"><i class="fa fa-search"></i></button>
+<a href="{% url 'dj1:all' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
+
+<style>
+.title{
+   font-family: "Monaco", "Inconsolata", Courier, monospace;
+    font-size: 30px;
+    font-weight: bold;
+    color: green;
+}
+.del{
+    color:red;
+}
+.edit{
+  font-weight:bold
+}
+</style>
+
+<p>
+{% if post_list %}
+<ul>
+  {% for post in post_list %}
+  
+
+    <li>
+        <a href="{% url 'dj1:post_detail' post.id %}"> <span class = "title">{{ post.title }} </span> | <small> {{ post.natural_updated }} </small> </a>
+        {% if post.owner_id == user.id %}
+        (<a href="{% url 'dj1:post_update' post.id %}"> <span class = "edit">Edit </span> </a> |
+        <a href="{% url 'dj1:post_delete' post.pk %}"><span class = "del"> Delete </span> </a>)
+        {% endif %}      
+    </li>
+  {% endfor %}
+ 
+</ul>
+
+{% else %}
+  <p>There are no posts in the database.</p>
+{% endif %}
+</p>
+<p>
+<a href="{% url 'dj1:post_create' %}">Add a Post</a> |
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'dj1:all' %}"><button type="button" class="btn btn-light">Logout</button></a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'dj1:all' %}">Login</a>
+{% endif %}
+</p>
+
+{% endblock %}
+
+

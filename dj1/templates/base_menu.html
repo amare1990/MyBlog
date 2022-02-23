@@ -1,0 +1,46 @@
+{% extends "base_bootstrap.html" %}
+{% block navbar %}
+{% load app_tags %}
+
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">{{ settings.APP_NAME }}</a>
+    </div>
+    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
+    <ul class="nav navbar-nav">
+      {% url 'posts' as posts %}
+      <li {% if request.get_full_path == posts %} 
+      class="active" {% endif %}>
+          <a href="{% url 'dj1:all' %}">Posts</a></li>   
+     <li><a href="{% url 'dj1:signup' %}">Signup</a></li>       
+    </ul>
+     
+    
+    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        <li>
+        <a href="{% url 'dj1:post_create' %}" >Create Post</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                <img style="width: 25px;" src="media/profile_pics/kigali.jpeg"/><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href = "{% url 'logout' %}?next={% url 'dj1:all' %}">Logout</a></li>
+                <li><a href="{% url 'dj1:profile' %}">Account settings</a></li>
+                <li><a href="#">Profile Picture</a></li>
+            </ul>
+        </li>
+        {% else %}
+        <li>
+        <a href= "{% url 'login' %}?next={% url 'dj1:all' %}">Login</a>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+
+{% endblock %}
+{% block footer %} {% include 'sidebar.html' %} {% endblock %}
+

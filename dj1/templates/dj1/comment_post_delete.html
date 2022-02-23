@@ -1,0 +1,16 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+<h1> Delete Comment </h1>
+<p> Are you sure you want to delete </p>
+<p> {{ comment.body }} </p>
+
+<form action ="" method = "POST">
+{% csrf_token %}
+<input type = "submit" value = "yes, delete" class = "button button_primary">
+<a href = "{% url 'dj1:post_detail' comment.post.id %}" class = "button button_secondary
+"> Cancel</a>
+
+</form>
+
+{% endblock %}
